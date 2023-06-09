@@ -89,12 +89,11 @@ def build_app():
     # Prompt template
     prompt_template = PromptTemplate(
         input_variables=['source_code'],
-        template="As a Java test generator, your objective is to create a JUnit5 unit test class and test methods for a "
-                 "given Java source code. Your focus should be on achieving high decision coverage, statement coverage, "
-                 "control flow coverage, and data flow coverage to produce top-quality tests. You should also apply test"
-                 " prioritization techniques when necessary. Your response should be in code format only, without any"
-                 " accompanying explanations. Ensure that you complete your answer without leaving any gaps."
-                 "Here is the source code:\n{source_code}"
+        template="Develop a JUnit5 unit test class that generates test methods for a given Java source code. The "
+                 "ultimate goal is to generate high-quality tests that achieve optimal decision coverage, "
+                 "statement coverage, control flow coverage, and data flow coverage. Additionally, employ test "
+                 "prioritization techniques as needed. Please provide your solution in code format exclusively, "
+                 "with no omissions. Here is the code:\n{source_code}"
     )
 
     llm = None
