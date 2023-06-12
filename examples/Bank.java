@@ -66,6 +66,10 @@ public class Bank {
         fromAccount.addTransaction(transaction);
         toAccount.addTransaction(transaction);
     }
+
+    public Map<String, Account> getAccounts() {
+        return accounts;
+    }
 }
 
 class Account {
@@ -96,6 +100,10 @@ class Account {
 
     public void addTransaction(Transaction transaction) {
         transactions.add(transaction);
+    }
+
+    public List<Transaction> getTransactions() {
+        return transactions;
     }
 }
 
