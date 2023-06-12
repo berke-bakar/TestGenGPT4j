@@ -3,6 +3,7 @@ import time
 import os
 import glob
 import streamlit as st
+from langchain.callbacks import get_openai_callback
 from langchain.llms import OpenAI, OpenAIChat
 from langchain.prompts import PromptTemplate
 from langchain.chains import LLMChain
@@ -89,10 +90,10 @@ def build_app():
     # Prompt template
     prompt_template = PromptTemplate(
         input_variables=['source_code'],
-        template="Develop a JUnit5 unit test class that generates test methods for a given Java source code. The "
-                 "ultimate goal is to generate high-quality tests that achieve optimal decision coverage, "
-                 "statement coverage, control flow coverage, and data flow coverage. Additionally, employ test "
-                 "prioritization techniques as needed. Please provide your solution in code format exclusively, "
+        template="Develop a JUnit5 unit test class that generates test methods for a given Java source code. The " +
+                 "ultimate goal is to generate high-quality tests that achieve optimal decision coverage, " +
+                 "statement coverage, control flow coverage, and data flow coverage. Additionally, employ test " +
+                 "prioritization techniques as needed. Please provide your solution in code format exclusively, " +
                  "with no omissions. Here is the code:\n{source_code}"
     )
 
@@ -112,10 +113,19 @@ def build_app():
         else:
             # show a spinner until test are generated
             with st.spinner('Generating test...'):
+
+                # Use max token for Standard API (text-davinci-002/003)
+                if not isinstance(llm, OpenAIChat):
+                    # It seems the API and tokenizer has a 77 token difference
+                    # mentioned in a lot of forums but no official explanation
+                    llm.max_tokens = llm.max_tokens_for_prompt(prompt) - 77
+
                 # Measure time
                 start_time = time.perf_counter()
-                # Get response
-                response = code_chain.run(source_code=prompt, verbose=True)
+                # Get response with additional info in the logs
+                with get_openai_callback() as cb:
+                    response = code_chain.run(source_code=prompt, verbose=True)
+                    print(cb)
                 end_time = time.perf_counter()
                 elapsed_time_ms = int((end_time - start_time) * 1000)
                 # Enable inputs
