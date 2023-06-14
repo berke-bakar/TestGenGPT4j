@@ -10,7 +10,7 @@ from langchain.chains import LLMChain
 
 
 def get_example_options():
-    path = r'./examples/*.java'
+    path = r'./exampleCodes/*.java'
     files = glob.glob(path)
     return map(lambda name: name.split(os.sep)[-1], files)
 
@@ -23,7 +23,7 @@ def create_llm(api_key, api_type, model_name):
 
 
 def create_example_text_area(selection):
-    f = open(os.path.join("./examples", selection), "r")
+    f = open(os.path.join("./exampleCodes", selection), "r")
     example_code = f.read()
     return st.text_area(label="Put your Java source file:", height=500,
                         placeholder="Enter Java code that has a class definition in it",
