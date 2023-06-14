@@ -2,6 +2,7 @@ package org.example;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 public class UserManager {
 
@@ -44,6 +45,10 @@ public class UserManager {
         }
 
         database.remove(username);
+    }
+
+    public boolean containsValue(User user){
+        return database.containsValue(user);
     }
 }
 
